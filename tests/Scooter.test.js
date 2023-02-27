@@ -1,25 +1,37 @@
-const Scooter = require('../src/Scooter')
-const User = require('../src/User')
+const Scooter = require('../src/Scooter');
+const User = require('../src/User');
 
-//typeof scooter === object
-describe('scooter object', () => {
-  test('does something', () => {
-    // edit this to be a real test!
-    expect(false).toEqual(true);
-  }
-)
-})
+describe('Scooter test', () => {
+  let scooterTest;
+  let userTest;
+  
+  beforeEach(() => {
+    scooterTest = new Scooter('Station 1');
+    userTest = new User('rachelboursia', 'password', 'Rachel', 'Boursia', 23);
+  });
 
-//Method tests
-describe('scooter methods', () => {
-  // tests here!
+  test('scooter === object', () => {
+    const scooterType = new Scooter('Station 1');
+    expect(typeof scooterType).toBe('object');
+  });
 
-  //rent method
+  test('rent method for low battery', () => {
+    scooterTest.charge = 10;
+    expect(() => {
+      scooterTest.rent(userTest);
+    }).toThrowError('Scooter needs to be charged');
+  });
 
-  //dock method
+  test('rent method for broken scooter', () => {
+    scooterTest.isBroken = true;
+    expect(() => {
+      scooterTest.rent(userTest).toThrowError('Scooter has to be repaired') 
+    });
+  });
 
-  //requestRepair method
-
-  //charge method
-
-})
+  test('dock method', () => {
+    scooterTest.dock('Station 2');
+    expect(scooterTest.station).toBe('Station 2');
+    expect(scooterTest.user).toBe(null);
+  });
+});
